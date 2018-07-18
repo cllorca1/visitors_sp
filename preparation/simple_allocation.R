@@ -1,3 +1,4 @@
+pacman::p_load(data.table, dplyr, ggplot2, reshape, extrafont)
 
 folder = "c:/projects/visitors/silo_folder/"
 file_weights = paste(folder,"microData/interimFiles/weigthsMatrix.csv", sep = "")
@@ -29,8 +30,9 @@ for (month in months){
   visitors = 0
   while (visitors < visitors_total){
     column = 1 + month
-    id = sample(x = weights$ID, size = 1, prob =  weights[[column]] )
-    row = as.list(dataset %>% filter(index == id)) 
+    weights_this_month = weights[[column]]
+    id = sample(x = weights$ID, size = 1, prob = weights_this_month, replace = T )
+    row = as.list(subset(dataset,index == id))
     visitors = visitors + row$hh_party
     micro_data = rbind(micro_data, list(month = month, id = row$index))
     progress = visitors/visitors_total * 100
@@ -38,7 +40,11 @@ for (month in months){
   }
 }
 
+write.csv(micro_data, "C:/projects/visitors/result/ids.csv", row.names = F)
+
 micro_data_validate = merge(x= micro_data, y = dataset, by.x = "id", by.y = "index")
 
-micro_data_validate %>% group_by(main_mode) %>% summarize(trips = sum(hh_party))
-micro_data_validate %>% group_by(purpose) %>% summarize(trips = sum(hh_party))
+by_mode = micro_data_validate %>% group_by(main_mode) %>% summarize(persons = sum(hh_party))
+by_purpose = micro_data_validate %>% group_by(purpose) %>% summarize(persons = sum(hh_party))
+by_party_size = micro_data_validate %>% group_by(hh_party) %>% summarize(persons = sum(hh_party))
+by_nights = micro_data_validate %>% group_by(nights) %>% summarize(persons = sum(hh_party)) 

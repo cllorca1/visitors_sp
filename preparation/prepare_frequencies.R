@@ -21,10 +21,20 @@ dataset = dataset %>% rowwise() %>%
   mutate(visitors_bicycle = if_else(main_mode == "bicycle", hh_party, 0)) %>% 
   mutate(visitors_ship = if_else(main_mode == "ship", hh_party, 0)) %>% 
   mutate(visitors_other_mode = if_else(main_mode == "other", hh_party, 0)) %>%
-  mutate(visitors_unaware_mode = if_else(main_mode == "unaware", hh_party, 0))
+  mutate(visitors_unaware_mode = if_else(main_mode == "unaware", hh_party, 0)) %>%
+  mutate(hh_party1 = if_else(hh_party == 1, hh_party, 0)) %>%
+  mutate(hh_party2 = if_else(hh_party == 2, hh_party, 0)) %>%
+  mutate(hh_party3 = if_else(hh_party == 3, hh_party, 0)) %>%
+  mutate(hh_party4 = if_else(hh_party == 4, hh_party, 0)) %>%
+  mutate('hh_party5+' = if_else(hh_party  > 4 ,hh_party, 0)) %>%
+  mutate(nights1 = if_else(nights == 1, hh_party, 0)) %>%
+  mutate(nights2 = if_else(nights == 2, hh_party, 0)) %>%
+  mutate(nights3 = if_else(nights == 3, hh_party, 0)) %>%
+  mutate(nights4 = if_else(nights == 4, hh_party, 0)) %>%
+  mutate('nights5+' = if_else(nights  > 4, hh_party, 0))
 
 summary(dataset)
 
 
 
-write.csv(dataset %>% select(ID = index,6:22), "C:/projects/visitors/input_sp/frequencyMatrix.csv", row.names = F)
+write.csv(dataset %>% select(ID = index,6:32), "C:/projects/visitors/input_sp/frequencyMatrix.csv", row.names = F)
