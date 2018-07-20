@@ -3,12 +3,13 @@ travelers_sp = travelers_sp %>%
   mutate(adult = if_else(hp_alter >= 18 & hp_alter < 65 ,1,0)) %>%
   mutate(retired = if_else(hp_alter >= 65,1,0))
 
+#assign compositions to parties
 party_composition = travelers_sp %>% group_by(unique_id) %>%
   summarize(n_child = sum(child), n_adult=sum(adult), n_retired = sum(retired))
 
 parties_sp = merge(x=parties_sp, y = party_composition, by = "unique_id")
 
-
+#filter na values and create dummies
 cluster_data_parties = parties_sp %>% rowwise() %>% 
   filter(main_mode != "denied", main_mode != "unaware", purpose != "denied", purpose !="unaware") %>%
   filter(p1014 < 95, hheink < 15) %>%
@@ -27,13 +28,11 @@ cluster_data_parties = parties_sp %>% rowwise() %>%
   mutate(number_of_nights = p1014)
   
 
-cluster_data_parties = cluster_data_parties %>% 
-  select(unique_id, number_of_nights, hheink,  
-         is_leisure, is_visit,  is_business, n_adult, n_child, n_retired)
 
-fit = kmeans(cluster_data_parties[2:ncol(cluster_data_parties)], 4)
 
-fit$centers
+
+
+
 
 plot_data = parties_sp %>% rowwise() %>% 
   filter(main_mode != "denied", main_mode != "unaware", purpose != "denied", purpose !="unaware") %>%
@@ -44,7 +43,7 @@ plot_data$cluster = fit$cluster
 #analyze purpose by month
 ggplot(plot_data,
        aes(x=as.factor(month), fill = as.factor(cluster))) +
-  geom_bar(position = "fill") +
+  geom_bar() +
   xlab("Month") + ylab("Share of trips by cluster") +
   theme_light() + 
   theme(text=element_text(size=16, family="Times New Roman")) + 

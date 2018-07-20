@@ -13,7 +13,7 @@ parties_sp$unique_id = seq.int(nrow(parties_sp))
 
 write.csv(parties_sp, "C:/projects/visitors/result/trip_parties.csv", row.names = F)
 
-parties_sp = read.csv("C:/projects/visitors/result/trip_parties.csv")
+#parties_sp = read.csv("C:/projects/visitors/result/trip_parties.csv")
 
 #assign persons in the household travelling
 

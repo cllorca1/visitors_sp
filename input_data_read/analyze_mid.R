@@ -20,15 +20,19 @@ data_domestic %>% group_by(purpose) %>% summarize(sum(r_gew))
 
 #analyze purpose by month
 ggplot(data_domestic %>% filter(purpose!="unaware", purpose !="denied"),
-       aes(x=as.factor(stich_m), fill = factor(purpose, labels = c("Leisure", "Visit", "Other Private", "Business", "(Weekend) Commuter", "Other")))) +
+       aes(x=as.factor(stich_m), fill = factor(purpose,
+                                               labels = c("Leisure", "Visit", 
+                                                          "Other Private", "Business",
+                                                          "Commuter", "Other")))) +
   geom_bar(position = "fill") +
   xlab("Month") + ylab("Share of trips by purpose") +
+  scale_fill_brewer(palette = "Set2") + 
   theme_light() + 
   theme(text=element_text(size=16, family="Times New Roman")) + 
   labs(fill = "Purpose") + 
   theme(legend.position = "bottom")
 
-  
+#export metafile as 800x600
 
 trips_purpose_month = data_domestic %>% group_by(purpose, stich_m) %>% summarize(sum(r_gew))
 write.csv(trips_purpose_month, "c:/projects/visitors/analysis/mid_purpose_month.csv", row.names = F)
