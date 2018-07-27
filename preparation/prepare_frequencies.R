@@ -1,10 +1,10 @@
 
 
 
-dataset = data_domestic %>% select(index, nights, purpose, main_mode, hh_party)
+dataset = data_domestic %>% select(index, nights, purpose, main_mode, hh_party, real_nights = p1014)
 
 dataset = dataset %>% rowwise() %>% 
-  filter(!is.na(hh_party), nights < 100) %>%
+  filter(!is.na(hh_party),!is.na(real_nights), nights < 96) %>%
   mutate(visitors_leisure = if_else(purpose == "leisure", hh_party, 0)) %>% 
   mutate(visitors_visit = if_else(purpose == "visit", hh_party, 0)) %>% 
   mutate(visitors_other_private = if_else(purpose == "other_private", hh_party, 0)) %>% 
@@ -13,7 +13,7 @@ dataset = dataset %>% rowwise() %>%
   mutate(visitors_other = if_else(purpose == "other", hh_party, 0)) %>% 
   mutate(visitors_denied = if_else(purpose == "denied", hh_party, 0)) %>% 
   mutate(visitors_unaware = if_else(purpose == "unaware", hh_party, 0)) %>% 
-  mutate(visitors_nights = nights * hh_party) %>% 
+  mutate(visitors_nights = real_nights * hh_party) %>% 
   mutate(visitors_car = if_else(main_mode == "car", hh_party, 0)) %>% 
   mutate(visitors_train = if_else(main_mode == "train", hh_party, 0)) %>% 
   mutate(visitors_coach = if_else(main_mode == "coach", hh_party, 0)) %>% 
@@ -37,4 +37,4 @@ summary(dataset)
 
 
 
-write.csv(dataset %>% select(ID = index,6:32), "C:/projects/visitors/input_sp/frequencyMatrix.csv", row.names = F)
+write.csv(dataset %>% select(ID = index,7:33), "C:/projects/visitors/input_sp/frequencyMatrix.csv", row.names = F)

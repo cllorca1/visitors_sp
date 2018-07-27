@@ -10,23 +10,23 @@ party_composition = travelers_sp %>% group_by(unique_id) %>%
 parties_sp = merge(x=parties_sp, y = party_composition, by = "unique_id")
 
 #filter na values and create dummies
-cluster_data_parties = parties_sp %>% rowwise() %>% 
-  filter(main_mode != "denied", main_mode != "unaware", purpose != "denied", purpose !="unaware") %>%
-  filter(p1014 < 95, hheink < 15) %>%
-  mutate(is_car = if_else(main_mode == "car",1,0)) %>% 
-  mutate(is_train =  if_else(main_mode == "train",1,0)) %>% 
-  mutate(is_coach =  if_else(main_mode == "coach",1,0)) %>% 
-  mutate(is_airplane =  if_else(main_mode == "air",1,0)) %>% 
-  mutate(is_bicycle =  if_else(main_mode == "bicycle",1,0)) %>% 
-  mutate(is_ship = if_else(main_mode == "ship",1,0)) %>% 
-  mutate(is_leisure = if_else(purpose == "leisure",1,0)) %>% 
-  mutate(is_visit = if_else(purpose == "visit",1,0)) %>%
-  mutate(is_other_private = if_else(purpose == "other_private",1,0)) %>%
-  mutate(is_business = if_else(purpose == "business",1,0)) %>% 
-  mutate(is_commuter = if_else(purpose == "weekend_commuter",1,0)) %>% 
-  mutate(is_other = if_else(purpose == "other",1,0)) %>%
-  mutate(number_of_nights = p1014)
-  
+# cluster_data_parties = parties_sp %>% rowwise() %>% 
+#   filter(main_mode != "denied", main_mode != "unaware", purpose != "denied", purpose !="unaware") %>%
+#   filter(p1014 < 95, hheink < 15) %>%
+#   mutate(is_car = if_else(main_mode == "car",1,0)) %>% 
+#   mutate(is_train =  if_else(main_mode == "train",1,0)) %>% 
+#   mutate(is_coach =  if_else(main_mode == "coach",1,0)) %>% 
+#   mutate(is_airplane =  if_else(main_mode == "air",1,0)) %>% 
+#   mutate(is_bicycle =  if_else(main_mode == "bicycle",1,0)) %>% 
+#   mutate(is_ship = if_else(main_mode == "ship",1,0)) %>% 
+#   mutate(is_leisure = if_else(purpose == "leisure",1,0)) %>% 
+#   mutate(is_visit = if_else(purpose == "visit",1,0)) %>%
+#   mutate(is_other_private = if_else(purpose == "other_private",1,0)) %>%
+#   mutate(is_business = if_else(purpose == "business",1,0)) %>% 
+#   mutate(is_commuter = if_else(purpose == "weekend_commuter",1,0)) %>% 
+#   mutate(is_other = if_else(purpose == "other",1,0)) %>%
+#   mutate(number_of_nights = p1014)
+#   
 
 
 

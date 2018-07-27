@@ -60,7 +60,6 @@ write.csv(trips_nights_month, "c:/projects/visitors/analysis/mid_month_nights.cs
 
 
 #party size whithin hh
-
 data_domestic = data_domestic %>% rowwise() %>% 
   mutate(hh_party = if_else(p1015 < 90, p1015 + 1, if_else(p1015 > 100, 1, NULL))) 
 
